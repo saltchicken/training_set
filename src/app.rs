@@ -24,7 +24,7 @@ struct Args {
     keywords: Option<String>,
 }
 
-// ‼️ Entry point for business logic
+
 pub async fn run() -> Result<()> {
     // 1. Parse Arguments
     let args = Args::parse();
@@ -40,7 +40,7 @@ pub async fn run() -> Result<()> {
     info!("Querying database for images...");
 
     // 4. Create Query Builder (Ownership is moved here)
-    // ‼️ FIX: We build the query object in this scope so it lives as long as the stream
+
     let mut query_builder =
         db::create_query_builder(args.classification.as_deref(), args.keywords.as_deref());
 

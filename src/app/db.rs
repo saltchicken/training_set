@@ -1,7 +1,7 @@
-// ‼️ NEW FILE: Handles all SQL interaction
+
 use crate::app::models::ImageRecord;
 use anyhow::{Context, Result};
-// ‼️ Removed unused 'Row' and 'Stream' imports
+
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use std::env;
 
@@ -16,13 +16,13 @@ pub async fn connect() -> Result<Pool<Postgres>> {
         .context("Failed to create connection pool")
 }
 
-// ‼️ CHANGED: Now returns the QueryBuilder so ownership moves to the caller.
+
 // This prevents the 'borrowed value does not live long enough' error.
 pub fn create_query_builder<'a>(
     classification: Option<&'a str>,
     keywords: Option<&'a str>,
 ) -> sqlx::QueryBuilder<'a, Postgres> {
-    // ‼️ Dynamic Query Construction
+
     let mut query_builder =
         sqlx::QueryBuilder::new("SELECT id, image_name, original_image FROM faces WHERE 1=1 ");
 

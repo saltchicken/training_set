@@ -1,5 +1,3 @@
-
-use crate::app::models::ImageRecord;
 use anyhow::{Context, Result};
 
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
@@ -16,13 +14,12 @@ pub async fn connect() -> Result<Pool<Postgres>> {
         .context("Failed to create connection pool")
 }
 
-
 // This prevents the 'borrowed value does not live long enough' error.
 pub fn create_query_builder<'a>(
     classification: Option<&'a str>,
     keywords: Option<&'a str>,
+    exclude_keyword: Option<&'a str>,
 ) -> sqlx::QueryBuilder<'a, Postgres> {
-
     let mut query_builder =
         sqlx::QueryBuilder::new("SELECT id, image_name, original_image FROM faces WHERE 1=1 ");
 
@@ -34,6 +31,12 @@ pub fn create_query_builder<'a>(
     if let Some(kwd) = keywords {
         query_builder.push(" AND keywords ILIKE "); // ILIKE for case-insensitive
         query_builder.push_bind(format!("%{}%", kwd));
+    }
+
+
+    if let Some(ex_kwd) = exclude_keyword {
+        query_builder.push(" AND keywords NOT ILIKE ");
+        query_builder.push_bind(format!("%{}%", ex_kwd));
     }
 
     query_builder

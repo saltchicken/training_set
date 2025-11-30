@@ -22,8 +22,11 @@ struct Args {
     /// Filter by keywords (Partial match, case-insensitive)
     #[arg(short, long)]
     keywords: Option<String>,
-}
 
+
+    #[arg(short, long)]
+    exclude_keyword: Option<String>,
+}
 
 pub async fn run() -> Result<()> {
     // 1. Parse Arguments
@@ -40,9 +43,11 @@ pub async fn run() -> Result<()> {
     info!("Querying database for images...");
 
     // 4. Create Query Builder (Ownership is moved here)
-
-    let mut query_builder =
-        db::create_query_builder(args.classification.as_deref(), args.keywords.as_deref());
+    let mut query_builder = db::create_query_builder(
+        args.classification.as_deref(),
+        args.keywords.as_deref(),
+        args.exclude_keyword.as_deref(),
+    );
 
     // 5. Build and Stream
     let query = query_builder.build_query_as::<models::ImageRecord>();

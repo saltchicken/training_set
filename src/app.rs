@@ -23,9 +23,12 @@ struct Args {
     #[arg(short, long)]
     keywords: Option<String>,
 
-
     #[arg(short, long)]
     exclude_keyword: Option<String>,
+
+    /// Database URL (Can be set via env var DB_URL)
+    #[arg(long, env = "DB_URL")]
+    db_url: String,
 }
 
 pub async fn run() -> Result<()> {
@@ -36,7 +39,7 @@ pub async fn run() -> Result<()> {
     io::ensure_directory_exists(&args.output_dir).context("Failed to prepare output directory")?;
 
     // 3. Connect to Database
-    let pool = db::connect()
+    let pool = db::connect(&args.db_url)
         .await
         .context("Failed to connect to database")?;
 

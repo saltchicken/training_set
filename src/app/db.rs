@@ -1,15 +1,16 @@
 use anyhow::{Context, Result};
 
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use std::env;
+
 
 /// Establishes connection to Postgres
-pub async fn connect() -> Result<Pool<Postgres>> {
-    let database_url = env::var("DB_URL").context("DB_URL must be set")?;
+pub async fn connect(database_url: &str) -> Result<Pool<Postgres>> {
+
+
 
     PgPoolOptions::new()
         .max_connections(5)
-        .connect(&database_url)
+        .connect(database_url)
         .await
         .context("Failed to create connection pool")
 }
@@ -32,7 +33,6 @@ pub fn create_query_builder<'a>(
         query_builder.push(" AND keywords ILIKE "); // ILIKE for case-insensitive
         query_builder.push_bind(format!("%{}%", kwd));
     }
-
 
     if let Some(ex_kwd) = exclude_keyword {
         query_builder.push(" AND keywords NOT ILIKE ");

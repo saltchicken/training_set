@@ -12,7 +12,10 @@ sqlx = { version = "0.8.6", features = [
   "uuid",
   "time",
 ] }
-clap = { version = "4.5", features = ["derive"] }
+clap = { version = "4.5", features = [
+  "derive",
+  "env",
+] }
 anyhow = "1.0"
 dotenvy = "0.15"
 tracing = "0.1"

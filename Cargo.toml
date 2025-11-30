@@ -1,0 +1,20 @@
+[package]
+name = "training_set"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.37", features = ["full"] }
+sqlx = { version = "0.8.6", features = [
+  "runtime-tokio-rustls",
+  "postgres",
+  "macros",
+  "uuid",
+  "time",
+] }
+clap = { version = "4.5", features = ["derive"] }
+anyhow = "1.0"
+dotenvy = "0.15"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+futures = "0.3" # For stream processing

@@ -27,7 +27,7 @@ struct Args {
     exclude_keyword: Option<String>,
 
     /// Database URL (Can be set via env var DB_URL)
-    #[arg(long, env = "DB_URL")]
+    #[arg(long, env = "DB_URL", hide_env_values = true)]
     db_url: String,
 }
 
@@ -100,3 +100,4 @@ async fn handle_record(record: &models::ImageRecord, output_dir: &PathBuf) -> Re
 
     Ok(())
 }
+
